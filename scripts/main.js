@@ -1,20 +1,5 @@
 import { world, system } from "@minecraft/server";
 
-const STATE = {
-  enabled: true,
-  config: {
-    checkInterval: 20,
-    changePercentage: 30,
-    checkRadius: 3,
-    enableParticles: true,
-    enableLogging: false,
-  },
-  stats: {
-    totalChanges: 0,
-    sessionStart: Date.now(),
-  },
-};
-
 const ALL_BLOCKS = {
   "minecraft:stone": 5,
   "minecraft:granite": 5,
@@ -175,10 +160,6 @@ const ALL_BLOCKS = {
   "minecraft:glowstone": 3
 };
 
-function log(m) {
-  if (STATE.config.enableLogging) console.log(`[Random] ${m}`);
-}
-
 function getRandomBlock() {
   const e = Object.entries(ALL_BLOCKS);
   let t = 0;
@@ -191,73 +172,30 @@ function getRandomBlock() {
   return "minecraft:stone";
 }
 
-function getNearby(player) {
-  const p = player.location;
-  const x = Math.floor(p.x);
-  const y = Math.floor(p.y);
-  const z = Math.floor(p.z);
-  const r = STATE.config.checkRadius;
-  const list = [];
-  for (let dx = -r; dx <= r; dx++)
-    for (let dy = -r; dy <= r; dy++)
-      for (let dz = -r; dz <= r; dz++) {
+system.runInterval(() => {
+  for (const dimensionId of ["minecraft:overworld", "minecraft:the_nether", "minecraft:the_end"]) {
+    try {
+      const dimension = world.getDimension(dimensionId);
+      const entities = dimension.getEntities();
+
+      for (const entity of entities) {
+        const p = entity.location;
+        const pos = {
+          x: Math.floor(p.x),
+          y: Math.floor(p.y) - 1,
+          z: Math.floor(p.z)
+        };
+
         try {
-          const pos = { x: x + dx, y: y + dy, z: z + dz };
-          const b = player.dimension.getBlock(pos);
-          if (b && !b.isAir) list.push(pos);
+          const b = dimension.getBlock(pos);
+          if (b) {
+            const newBlockType = getRandomBlock();
+            if (b.typeId !== newBlockType) {
+              b.setType(newBlockType);
+            }
+          }
         } catch {}
       }
-  return list.length ? list[Math.floor(Math.random() * list.length)] : null;
-}
-
-function setBlock(dim, pos, type) {
-  try {
-    const b = dim.getBlock(pos);
-    if (!b || b.isAir) return;
-    b.setType(type);
-    if (STATE.config.enableParticles) {
-      try {
-        dim.spawnParticle("minecraft:end_rod", pos);
-      } catch {}
-    }
-    STATE.stats.totalChanges++;
-  } catch (e) {
-    log(e.message);
-  }
-}
-
-let tick = 0;
-
-system.runInterval(() => {
-  if (!STATE.enabled) return;
-  tick++;
-  if (tick % STATE.config.checkInterval) return;
-  const ps = world.getPlayers();
-  for (const p of ps) {
-    const pos = getNearby(p);
-    if (!pos) continue;
-    if (Math.random() * 100 > STATE.config.changePercentage) continue;
-    setBlock(p.dimension, pos, getRandomBlock());
+    } catch {}
   }
 }, 1);
-
-world.beforeEvents.chatSend.subscribe(ev => {
-  const m = ev.message.trim();
-  const p = ev.sender;
-  if (!m.startsWith("/Random:")) return;
-  ev.cancel = true;
-  const a = m.slice(9).split(" ");
-  const c = a[0];
-
-  if (c === "help") p.sendMessage("§6/Random:toggle /info /probability /interval /radius /particles /logging /reset");
-  else if (c === "toggle") STATE.enabled = !STATE.enabled, p.sendMessage("§a" + STATE.enabled);
-  else if (c === "info") p.sendMessage(`§aChanges:${STATE.stats.totalChanges}`);
-  else if (c === "probability") STATE.config.changePercentage = +a[1] || 0;
-  else if (c === "interval") STATE.config.checkInterval = +a[1] || 1;
-  else if (c === "radius") STATE.config.checkRadius = +a[1] || 1;
-  else if (c === "particles") STATE.config.enableParticles = !STATE.config.enableParticles;
-  else if (c === "logging") STATE.config.enableLogging = !STATE.config.enableLogging;
-  else if (c === "reset") STATE.stats.totalChanges = 0, STATE.stats.sessionStart = Date.now();
-});
-
-console.log(`Loaded | Blocks:${Object.keys(ALL_BLOCKS).length}`);
