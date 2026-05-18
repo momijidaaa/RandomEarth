@@ -1,0 +1,26 @@
+{
+  "format_version": 2,
+  "header": {
+    "description": "RANDOM EARTH",
+    "name": "Random Ground Blocks",
+    "uuid": "12345678-1234-1234-1234-123456789012",
+    "version": [1, 0, 0],
+    "min_engine_version": [1, 20, 0]
+  },
+  "modules": [
+    {
+      "description": "Script APIスクリプト",
+      "type": "script",
+      "uuid": "87654321-4321-4321-4321-210987654321",
+      "version": [1, 0, 0],
+      "entry": "scripts/main.js",
+      "language": "javascript"
+    }
+  ],
+  "dependencies": [
+    {
+      "uuid": "b26a99b8-d4d1-464f-a2d8-81766d528412",
+      "version": [0, 1, 0]
+    }
+  ]
+}
