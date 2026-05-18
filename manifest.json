@@ -3,14 +3,14 @@
   "header": {
     "name": "Random earth",
     "description": "Randomize ground blocks",
-    "uuid": "2c1c2a3e-6c3f-4b2f-9c7a-8d1f2c9a1a11",
+    "uuid": "4f9e1a8b-c6d2-4e5f-8a3c-7b1a9e2d3f4a",
     "version": [1, 0, 0]
   },
   "modules": [
     {
       "type": "script",
       "language": "javascript",
-      "uuid": "8f3b6a10-3a5e-4c2c-9a2e-1f7b9c0d2e33",
+      "uuid": "2d8c5b9e-1a4f-4d3b-9c7e-8f2a1b0c3d4e",
       "version": [1, 0, 0],
       "entry": "scripts/main.js"
     }
