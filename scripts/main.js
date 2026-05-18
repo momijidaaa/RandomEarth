@@ -80,6 +80,8 @@ const ALL_BLOCKS = [
   "minecraft:deepslate_copper_ore",
   "minecraft:coal_ore",
   "minecraft:deepslate_coal_ore",
+  "minecraft:nether_gold_ore",
+  "minecraft:gilded_blackstone",
   "minecraft:iron_block",
   "minecraft:gold_block",
   "minecraft:diamond_block",
@@ -218,4 +220,4 @@ system.runInterval(() => {
       lastPositions.delete(savedId);
     }
   }
-}, 10);
+}, 1);
