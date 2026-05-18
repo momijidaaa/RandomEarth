@@ -4,7 +4,8 @@
     "name": "Random earth",
     "description": "Randomize ground blocks",
     "uuid": "4f9e1a8b-c6d2-4e5f-8a3c-7b1a9e2d3f4a",
-    "version": [1, 0, 0]
+    "version": [1, 0, 0],
+    "min_engine_version": [1, 20, 0]
   },
   "modules": [
     {
