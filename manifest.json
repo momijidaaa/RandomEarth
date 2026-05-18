@@ -1,26 +1,24 @@
 {
   "format_version": 2,
   "header": {
-    "description": "RANDOM EARTH",
-    "name": "Random Ground Blocks",
-    "uuid": "12345678-1234-1234-1234-123456789012",
-    "version": [1, 0, 0],
-    "min_engine_version": [1, 20, 0]
+    "name": "Random earth",
+    "description": "Randomize ground blocks",
+    "uuid": "2c1c2a3e-6c3f-4b2f-9c7a-8d1f2c9a1a11",
+    "version": [1, 0, 0]
   },
   "modules": [
     {
-      "description": "Script APIスクリプト",
       "type": "script",
-      "uuid": "87654321-4321-4321-4321-210987654321",
+      "language": "javascript",
+      "uuid": "8f3b6a10-3a5e-4c2c-9a2e-1f7b9c0d2e33",
       "version": [1, 0, 0],
-      "entry": "scripts/main.js",
-      "language": "javascript"
+      "entry": "scripts/main.js"
     }
   ],
   "dependencies": [
     {
-      "uuid": "b26a99b8-d4d1-464f-a2d8-81766d528412",
-      "version": [0, 1, 0]
+      "module_name": "@minecraft/server",
+      "version": "1.10.0"
     }
   ]
 }
